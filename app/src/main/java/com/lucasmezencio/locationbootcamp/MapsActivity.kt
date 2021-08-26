@@ -2,6 +2,8 @@ package com.lucasmezencio.locationbootcamp
 
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.lucasmezencio.locationbootcamp.databinding.ActivityMapsBinding
+import java.util.*
 
 class MapsActivity : AppCompatActivity(),
         OnMapReadyCallback,
@@ -91,7 +94,23 @@ class MapsActivity : AppCompatActivity(),
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(
             BitmapFactory.decodeResource(resources, R.mipmap.ic_user_location)
         ))
+
+        val titleStr = getAdress(location)
+        markerOptions.title(titleStr)
+
         map.addMarker(markerOptions)
+    }
+
+    private fun getAdress(latLng: LatLng): String {
+        val geocoder = Geocoder(this, Locale.getDefault())
+
+        val addresses: List<Address> = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+
+//        val city = addresses[0].locality
+//        val state = addresses[0].adminArea
+//        val country = addresses[0].countryName
+//        val postalCode = addresses[0].postalCode
+        return addresses[0].getAddressLine(0)
     }
 
     override fun onMarkerClick(p0: Marker): Boolean = false
