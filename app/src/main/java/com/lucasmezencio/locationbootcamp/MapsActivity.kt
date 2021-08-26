@@ -74,6 +74,7 @@ class MapsActivity : AppCompatActivity(),
         }
 
         map.isMyLocationEnabled = true
+        map.mapType = GoogleMap.MAP_TYPE_TERRAIN
 
         fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
             if (location != null) {
